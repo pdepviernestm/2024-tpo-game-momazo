@@ -1,10 +1,11 @@
-# Nombre del juego (<- borrar y completar)
+# Astro Defensor
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Lucio De Goñi
+- Bruno Rodriguez
+- Gonzalo Pinto
+- Valentin Bravo
 
 ## Capturas
 

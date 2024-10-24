@@ -1,0 +1,16 @@
+import elementos.*
+
+describe "Tests de Nave"{
+    test "Si la nave pierde todas sus vidas no esta vivo"{
+        nave.serAfectado("Danio")
+        nave.serAfectado("Danio")
+        nave.serAfectado("Danio")
+        assert.notThat(nave.estaVivo())
+    }
+
+    test "Si se modifica la posicion de la nave esta cambia"{
+        nave.position(game.at(2,1))
+        assert.equals(game.at(2,1), nave.position())
+    }
+
+}
