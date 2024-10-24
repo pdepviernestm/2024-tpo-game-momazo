@@ -1,12 +1,13 @@
 import wollok.game.*
 import elementos.*
+import vidas.*
 
 program moverseJuego {
-    game.title("Moverse")
+    game.title("Astro Defender")
     game.height(altoDelJuego)
     game.width(anchoDelJuego)
     game.cellSize(tamanioCelda)
-    game.boardGround("fondo.gif")
+    game.boardGround("fondoAstroDefender.png")
 
     // Visual
     game.addVisual(nave)
@@ -24,7 +25,7 @@ program moverseJuego {
     game.onTick(50, "Caida cohete", {
         if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
         {
-            cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-1))
+            cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-3))
         }
         else
         {
@@ -133,6 +134,6 @@ program moverseJuego {
             // game.sound("perder.mp3").play()
         }
     })
-
+    vidasNave.agregarVidas()
     game.start()
 }

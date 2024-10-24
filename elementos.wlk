@@ -1,10 +1,11 @@
+import vidas.*
 const anchoDelJuego = 30
 const altoDelJuego = 20
 const tamanioCelda = 50
 const maxMeteoritos = 18
 
 class Meteorito {
-    var position = game.at(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-1))
+    var position = game.at(1.randomUpTo(anchoDelJuego -3),15.randomUpTo(altoDelJuego-3))
     
     // GAME
     method position() = position
@@ -13,7 +14,7 @@ class Meteorito {
     }
     method efecto() = "Danio"
     method esBeneficio() = false
-    method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-1))} 
+    method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-3),15.randomUpTo(altoDelJuego-3))} 
     method image() = "meteorito.png"
 }
 object puntaje {
@@ -32,10 +33,10 @@ object puntaje {
 
     method text() = puntos.toString()
     method textColor() = "FFFFFF"
-    method textSize() = 2
+    method textSize() = 32
 
     // GAME
-    var position = game.at(anchoDelJuego/2,altoDelJuego-1)
+    var position = game.at(2, altoDelJuego - 2)
 
     method position() = position
     method position(newPos) {
@@ -44,7 +45,7 @@ object puntaje {
 }
 
 object medikit {
-    var position = game.at(2,altoDelJuego)
+    var position = game.at(2,altoDelJuego - 4)
     
     // GAME
     method esBeneficio() = true
@@ -61,28 +62,12 @@ object medikit {
 object nave {
     var vidas = 3
 
-    method text() {
-        if (vidas == 3){
-            return "♥♥♥"
-        }
-        else if (vidas == 2){
-            return "♥♥"
-        }
-        else if (vidas == 1){
-            return "♥"
-        }
-        else {return ""}
-    }
-
     method textColor() = "FF0000"
 
     method estaVivo() = vidas > 0
     
-    method perderVida() {
-        vidas -= 1
-    }
-    method ganarVida() {
-        vidas += 1
+    method modificarVida(vidaModificada){
+        vidas += vidaModificada
     }
     method morir() {
         vidas = 0
@@ -90,10 +75,12 @@ object nave {
     
     method serAfectado(efecto) {
         if (efecto=="Vida extra" && vidas < 3){
-            self.ganarVida()
+            self.modificarVida(1)
+            vidasNave.sumarVida()
         }
         else if (efecto=="Danio" && vidas > 0){
-            self.perderVida()
+            self.modificarVida(-1)
+            vidasNave.quitarVida()
         }
         else if (efecto=="Muerte"){
             self.morir()
