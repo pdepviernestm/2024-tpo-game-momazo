@@ -11,10 +11,12 @@ program moverseJuego {
 
     // Visual
     game.addVisual(nave)
-    game.addVisual(puntaje)
+    //game.addVisual(puntaje)
     game.addVisual(cohete)
     game.addVisual(medikit)
     game.addVisual(bala)
+    
+    puntaje.inicializar() //inicializo el puntaje
 
     game.sound("soundtrack.mp3").volume(0.2)
     game.sound("soundtrack.mp3").play()
