@@ -2,7 +2,18 @@ import vidas.*
 const anchoDelJuego = 30
 const altoDelJuego = 20
 const tamanioCelda = 50
-const maxMeteoritos = 18
+const maxMeteoritos = 0
+const largoJefe = 6
+const alturaBoss = 15
+const rangoMovimiento = anchoDelJuego - largoJefe
+
+// class Objeto {
+//  var property position = game.at(1.randomUpTo(anchoDelJuego -3),15.randomUpTo(altoDelJuego-3))
+//  method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-3),15.randomUpTo(altoDelJuego-3))}
+//  method image() //Método abstracto
+//  method esBeneficio()  //Método abstracto
+// }
+
 
 class Meteorito {
     var position = game.at(1.randomUpTo(anchoDelJuego -3),15.randomUpTo(altoDelJuego-3))
@@ -28,7 +39,7 @@ class Digitos {
     method image() = imagen
 
     method actualizarValor(puntajeTotal) {
-        valorDigitoActual = (puntajeTotal/10 ** digitoInteres) % 10
+        valorDigitoActual = ((puntajeTotal/10 ** digitoInteres) % 10).truncate(0)
         self.actualizarImagen()
     }
 
@@ -104,6 +115,12 @@ object medikit {
     method image() = "medikit.png"
 }
 
+// object llave inherits Objeto{ 
+//     method image() = "2.png"
+
+//     method esBeneficio() = true
+// }
+
 object nave {
     var vidas = 3
 
@@ -177,4 +194,49 @@ object cohete {
     method posicion(x,y){            //Para poder pasar la posicicion con dos parametros
         position = game.at(x,y)
     }
+}
+
+
+object cerebroBoss {
+    var property vida = 100
+    const hitbox = []
+    var property direccion = true // false izq true der
+    var property contadorMovimiento = 0
+
+    method esBeneficio() = true
+
+    method agregarHitbox (elementoHitbox) {
+        hitbox.add(elementoHitbox)
+    }
+    
+    method perderVida(){
+        vida-=50
+    }
+
+    method estaVivo() = vida > 0
+
+    method moverse(){
+        hitbox.forEach({a => a.moverse(direccion)})
+        contadorMovimiento+=1
+        if(contadorMovimiento==rangoMovimiento){
+            contadorMovimiento = 0
+            self.direccion(!direccion)
+        }
+    }
+}
+
+class BossHitBox {
+    var property position
+    method esBossHitbox() = true
+    method esBeneficio() = false
+    
+    method image() = "1.png"
+    method moverse(direccion){// false izq true der
+        if(direccion){  
+            self.position(self.position().right(1))
+        }
+        else{
+            self.position(self.position().left(1))
+        }
+    }   
 }

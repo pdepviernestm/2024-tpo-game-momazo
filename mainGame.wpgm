@@ -53,7 +53,7 @@ program moverseJuego {
             bala.position(nave.position().up(1))
             game.sound("bala.mp3").volume(0.1)
             game.sound("bala.mp3").play()
-            game.onTick(50, "Movimiento Disparo", { 
+            game.onTick(200, "Movimiento Disparo", { 
                 if (bala.position().y()>altoDelJuego)
                 {
                     game.removeTickEvent("Movimiento Disparo")
@@ -71,6 +71,10 @@ program moverseJuego {
         if (not elemento.esBeneficio())
         {
             elemento.position(game.at(0,-1))
+            bala.position(game.at(0,altoDelJuego+1))
+        }
+        if (elemento.esBossHitbox()){
+            cerebroBoss.perderVida()
             bala.position(game.at(0,altoDelJuego+1))
         }
     })
@@ -95,7 +99,25 @@ program moverseJuego {
         }
     })
 
+    // Boss
+    var contadorBossHitbox = 0
+    game.onTick(100,"Crear Boss", {
+        if (contadorBossHitbox < largoJefe)
+        {
+            const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss))
+            game.addVisual(bossHitbox)
+            cerebroBoss.agregarHitbox(bossHitbox)
+            contadorBossHitbox += 1
+        }
+        else {
+            game.removeTickEvent("Crear Boss")
+        }
+    })
     
+    game.onTick(500, "Movimiento Boss", {
+        cerebroBoss.moverse()
+    })
+
     // Medikit
     game.onTick(5000, "Dropear Medikit",{
         medikit.posicionSpawn()
@@ -107,6 +129,18 @@ program moverseJuego {
                 }
             })
     })
+
+    // // Llave
+    // game.onTick(5000, "Dropear Llave",{
+    //     llave.posicionSpawn()
+    //         game.onTick(200, "Caida Llave",{
+    //             medikit.position(llave.position().down(1))
+    //             if (llave.position().y() < -1)
+    //             {
+    //                 game.removeTickEvent("Caida Llave")
+    //             }
+    //         })
+    // })
 
     // Impactos
     game.onCollideDo(nave, {elemento =>
@@ -128,14 +162,13 @@ program moverseJuego {
     })
 
     // Checkear Muerte
-    game.onTick(200,"Sumar puntaje", {
-        if (not nave.estaVivo())
+    game.onTick(200,"Checkear muerte", {
+        if (not nave.estaVivo() || not cerebroBoss.estaVivo())
         {
             game.stop()
-            // game.sound("soundtrack.mp3").stop()
-            // game.sound("perder.mp3").play()
         }
     })
+
     vidasNave.agregarVidas()
     game.start()
 }
