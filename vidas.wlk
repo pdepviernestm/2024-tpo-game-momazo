@@ -1,7 +1,7 @@
 import elementos.*
 object vidasNave {
     const x = anchoDelJuego - 5
-    const y = altoDelJuego - 1.5
+    const y = altoDelJuego - 2
     const cant = 3
     var posUltVidaX = null
     var property listaVidas = [] 

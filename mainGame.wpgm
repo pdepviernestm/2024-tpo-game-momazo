@@ -1,15 +1,18 @@
 import wollok.game.*
+import nave.*
+import bossFinal.*
 import elementos.*
 import vidas.*
+import contador.*
 
 program moverseJuego {
     game.title("Astro Defender")
     game.height(altoDelJuego)
     game.width(anchoDelJuego)
     game.cellSize(tamanioCelda)
-    game.boardGround("fondoAstroDefender.png")
+    game.boardGround("fondoAstroDefenders.png")
 
-    // Visual
+// Visual
     game.addVisual(nave)
     //game.addVisual(puntaje)
     game.addVisual(cohete)
@@ -17,25 +20,14 @@ program moverseJuego {
     game.addVisual(bala)
     
     puntaje.inicializar() //inicializo el puntaje
+    vidasNave.agregarVidas() // agrego las vidas
 
+// Sonido
     game.sound("soundtrack.mp3").volume(0.2)
     game.sound("soundtrack.mp3").play()
     game.sound("soundtrack.mp3").shouldLoop(true)
     
-
-    // Caida cohete
-    game.onTick(50, "Caida cohete", {
-        if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
-        {
-            cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-3))
-        }
-        else
-        {
-            cohete.position(cohete.position().down(1))
-        }
-    })
-
-    // Movimiento nave
+// Movimiento nave
     keyboard.left().onPressDo({
         nave.position(nave.position().left(1))
     })
@@ -44,7 +36,7 @@ program moverseJuego {
         nave.position(nave.position().right(1))
     })
 
-    // Disparar
+// Disparar
     keyboard.space().onPressDo({
         if (bala.cargada())
         {
@@ -54,7 +46,7 @@ program moverseJuego {
             game.sound("bala.mp3").volume(0.1)
             game.sound("bala.mp3").play()
             game.onTick(200, "Movimiento Disparo", { 
-                if (bala.position().y()>altoDelJuego)
+                if (bala.position().y()>altoDelJuego-4)
                 {
                     game.removeTickEvent("Movimiento Disparo")
                 }
@@ -66,7 +58,7 @@ program moverseJuego {
             game.say(nave, "Cooldown")
     })
 
-    // Colisiones bala
+// Colisiones bala
     game.onCollideDo(bala, {elemento =>
         if (not elemento.esBeneficio())
         {
@@ -81,7 +73,20 @@ program moverseJuego {
     
     var contador = 0
 
-    // Caida meteorito
+
+// Caida cohete
+    game.onTick(50, "Caida cohete", {
+        if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
+        {
+            cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-3))
+        }
+        else
+        {
+            cohete.position(cohete.position().down(1))
+        }
+    })
+
+// Caida meteorito
     game.onTick(100,"Crear Meteorito", {
         if (contador < maxMeteoritos)
         {
@@ -98,6 +103,7 @@ program moverseJuego {
             })
         }
     })
+    
 
     // Boss
     var contadorBossHitbox = 0
@@ -144,7 +150,7 @@ program moverseJuego {
 
     // Impactos
     game.onCollideDo(nave, {elemento =>
-        nave.serAfectado(elemento.efecto())
+        nave.serAfectado(elemento)
         if (elemento.esBeneficio()){
             game.sound("curacion.mp3").volume(0.1)
             game.sound("curacion.mp3").play()
@@ -169,6 +175,5 @@ program moverseJuego {
         }
     })
 
-    vidasNave.agregarVidas()
     game.start()
 }

@@ -1,4 +1,5 @@
 import elementos.*
+import nave.*
 
 describe "Tests de Nave"{
     test "Si la nave pierde todas sus vidas no esta vivo"{
