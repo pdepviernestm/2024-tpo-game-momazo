@@ -1,3 +1,4 @@
+import elementos.*
 class Digitos {
     var property digitoInteres //digito que nos importa del numero inicial 0 al 5 (6 totales 5-4-3-2-1-0)
     var property valorDigitoActual = 0
@@ -67,5 +68,34 @@ object puntaje {
 
     method actualizarPuntaje() {
         digitos.forEach({a => a.actualizarValor(puntos)})
+    }
+}
+
+object cargadorContador {
+    const property digitos = []
+    var balas = cantidadBalas
+
+    method inicializar(){
+        const digito0 = new Digitos(digitoInteres = 0, x = 29, y=0) 
+        const digito1 = new Digitos(digitoInteres = 1, x = 28, y=0)
+        digitos.add(digito0)
+        digitos.add(digito1)
+        self.actualizarCargador()
+        game.addVisual(digito0)
+        game.addVisual(digito1)
+    }
+
+    method cargarBala() {
+        balas += 1
+        self.actualizarCargador()
+    }
+
+    method gastarBala() {
+        balas -= 1
+        self.actualizarCargador()
+    }
+
+    method actualizarCargador() {
+        digitos.forEach({a => a.actualizarValor(balas)})
     }
 }

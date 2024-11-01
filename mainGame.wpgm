@@ -17,10 +17,10 @@ program moverseJuego {
     //game.addVisual(puntaje)
     game.addVisual(cohete)
     game.addVisual(medikit)
-    game.addVisual(bala)
     
     puntaje.inicializar() //inicializo el puntaje
     vidasNave.agregarVidas() // agrego las vidas
+    cargadorContador.inicializar()
 
 // Sonido
     game.sound("soundtrack.mp3").volume(0.2)
@@ -37,38 +37,43 @@ program moverseJuego {
     })
 
 // Disparar
+nave.inicializarBalas()
     keyboard.space().onPressDo({
-        if (bala.cargada())
-        {
-            bala.cargada(false)
-            game.schedule(5000, {bala.cargada(true)})
-            bala.position(nave.position().up(1))
+        if (nave.tieneBalas())
+        {   
+            const balaDisparada = nave.dispararBala()
+            cargadorContador.gastarBala()
+
+            // Devolver la bala
+            game.schedule(5000, {
+                nave.recuperarBala(balaDisparada)
+                cargadorContador.cargarBala()
+            })
+
+            balaDisparada.position(nave.position().up(1))
             game.sound("bala.mp3").volume(0.1)
             game.sound("bala.mp3").play()
             game.onTick(200, "Movimiento Disparo", { 
-                if (bala.position().y()>altoDelJuego-4)
+                if (balaDisparada.position().y()>altoDelJuego-4)
                 {
+                    balaDisparada.position(game.at(altoDelJuego+1, anchoDelJuego))
                     game.removeTickEvent("Movimiento Disparo")
                 }
                 else
-                    bala.position(bala.position().up(1))
+                    balaDisparada.position(balaDisparada.position().up(1))
             })
+            // Colisiones bala
+            game.onCollideDo(balaDisparada, {elemento =>
+                if (not elemento.esBeneficio())
+                {
+                    elemento.position(game.at(0,-1))
+                    balaDisparada.position(game.at(0,altoDelJuego+1))
+                    elemento.serHiteado()
+                }
+    })
         }
         else
-            game.say(nave, "Cooldown")
-    })
-
-// Colisiones bala
-    game.onCollideDo(bala, {elemento =>
-        if (not elemento.esBeneficio())
-        {
-            elemento.position(game.at(0,-1))
-            bala.position(game.at(0,altoDelJuego+1))
-        }
-        if (elemento.esBossHitbox()){
-            cerebroBoss.perderVida()
-            bala.position(game.at(0,altoDelJuego+1))
-        }
+            game.say(nave, "No hay balas disponibles")
     })
     
     var contador = 0

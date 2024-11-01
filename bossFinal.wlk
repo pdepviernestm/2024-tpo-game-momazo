@@ -7,6 +7,9 @@ object cerebroBoss {
 
     method esBeneficio() = true
 
+
+    method serHiteado() {}
+
     method agregarHitbox (elementoHitbox) {
         hitbox.add(elementoHitbox)
     }
@@ -29,9 +32,9 @@ object cerebroBoss {
 
 class BossHitBox {
     var property position
-    method esBossHitbox() = true
     method esBeneficio() = false
-    
+    method serHiteado() {cerebroBoss.perderVida()}
+
     method image() = "1.png"
     method moverse(direccion){// false izq true der
         if(direccion){  

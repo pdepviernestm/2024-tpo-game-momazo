@@ -16,10 +16,10 @@ object vidasNave {
     }
     
     method quitarVida() {
-            const vida = listaVidas.last()  
+            const vida = listaVidas.last()
             vida.quitarVida() 
             listaVidas.remove(vida)
-            posUltVidaX= listaVidas.last().ejeX() 
+            posUltVidaX= listaVidas.last().ejeX()
     }
 
     method sumarVida() {
