@@ -13,56 +13,78 @@ class ObjetoQueCae {
     var property position = game.at(1.randomUpTo(anchoDelJuego -4),15.randomUpTo(altoDelJuego-4))
     method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-4),15.randomUpTo(altoDelJuego-4))}
     method image() 
-    method esBeneficio()  
     method inicializarPosicion() {position = game.at(0, altoDelJuego + 1)}
 }
 
 class Meteorito inherits ObjetoQueCae() {
     // GAME
-    override method esBeneficio() = false
-    method serHiteado() {}
     override method image() = "meteorito.png"
     method afectar(nave){
         nave.modificarVida(-1)
         vidasNave.quitarVida()
     }
+    method colisionNave(nave){
+        self.afectar(nave)
+        game.sound("impacto.mp3").volume(0.1)
+        game.sound("impacto.mp3").play()
+        self.position(game.at(0,-1))
+    }
+    method colisionBala(bala){
+        self.position(game.at(0,-1))
+        bala.position(game.at(0,altoDelJuego+1))
+    }    
 }
 
 object medikit inherits ObjetoQueCae {
-    override method esBeneficio() = true
-    method serHiteado() {}
     override method image() = "medikit.png"
-    
     method afectar(nave){
         if(nave.vidasNave() <3){
             nave.modificarVida(1)
             vidasNave.sumarVida()
         } 
     }
-    
+    method colisionNave(nave){
+        self.afectar(nave)
+        game.sound("curacion.mp3").volume(0.1)
+        game.sound("curacion.mp3").play()
+        self.position(game.at(0,-1))
+    }
+    method colisionBala(bala){}
 }
 
 object llave inherits ObjetoQueCae { 
     override method image() = "llave.png"
-    override method esBeneficio() = true
-    method serHiteado() {} 
     method afectar(nave) {
         if(nave.llaves() < llavesNecesarias){
             nave.consegurLlave()
         }
     }
+    method colisionNave(nave){
+        self.afectar(nave)
+        game.sound("curacion.mp3").volume(0.1)
+        game.sound("curacion.mp3").play()
+        self.position(game.at(0,-1))
+    }
+    method colisionBala(bala){}
 }
 
 object cohete inherits ObjetoQueCae {
-    method serHiteado() {}
     override method image() = "cohete.png"
-    override method esBeneficio() = false
-
     method posicion(x,y){            
         position = game.at(x,y)
     }
     method afectar(nave){
         nave.morir()
+    }
+    method colisionNave(nave){
+        self.afectar(nave)
+        game.sound("impacto.mp3").volume(0.1)
+        game.sound("impacto.mp3").play()
+        self.position(game.at(0,-1))
+    }
+    method colisionBala(bala){
+        self.position(game.at(0,-1))
+        bala.position(game.at(0,altoDelJuego+1))
     }
 }
 

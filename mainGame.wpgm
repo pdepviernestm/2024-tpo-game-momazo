@@ -42,6 +42,7 @@ program moverseJuego {
 
 // Disparar
 nave.inicializarBalas()
+
 keyboard.space().onPressDo({
     if (nave.tieneBalas())
     {   
@@ -67,14 +68,7 @@ keyboard.space().onPressDo({
                 balaDisparada.position(balaDisparada.position().up(1))
         })
         // Colisiones bala
-        game.onCollideDo(balaDisparada, {elemento =>
-            if (not elemento.esBeneficio())
-            {
-                elemento.position(game.at(0,-1))
-                balaDisparada.position(game.at(0,altoDelJuego+1))
-                elemento.serHiteado()
-            }
-})
+        game.onCollideDo(balaDisparada, {elemento => elemento.colisionBala(balaDisparada) })
     }
     else
         game.say(nave, "No hay balas disponibles")
@@ -120,7 +114,7 @@ game.onTick(100,"Crear Boss", {
     if(nave.llaves() >= llavesNecesarias){
         if (contadorBossHitbox < largoJefe)
         {
-            const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss))
+            const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss), valorImagen = contadorBossHitbox)
             game.addVisual(bossHitbox)
             cerebroBoss.agregarHitbox(bossHitbox)
             contadorBossHitbox += 1
@@ -165,16 +159,7 @@ game.onTick(7000, "Dropear Llave",{
 
 // Impactos
 game.onCollideDo(nave, {elemento =>
-    nave.serAfectado(elemento)
-    if (elemento.esBeneficio()){
-        game.sound("curacion.mp3").volume(0.1)
-        game.sound("curacion.mp3").play()
-    }
-    else{
-        game.sound("impacto.mp3").volume(0.1)
-        game.sound("impacto.mp3").play()
-    }
-    elemento.position(game.at(0,-1))
+    elemento.colisionNave(nave)
 }) 
 
 // Contador

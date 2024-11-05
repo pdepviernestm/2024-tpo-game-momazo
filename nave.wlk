@@ -81,11 +81,11 @@ object nave {
     
     // GAME
     method image() = "nave.png"
+    method colisionBala(bala){}
 }
 
 class Bala {
     var property position = game.at(anchoDelJuego/2,altoDelJuego)
-    method esBeneficio() = true
-    method serHiteado() {}
     method image() = "bala.png"
+    method colisionBala(bala){}
 }

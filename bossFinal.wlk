@@ -5,9 +5,6 @@ object cerebroBoss {
     var property direccion = true // false izq true der
     var property contadorMovimiento = 0
 
-    method esBeneficio() = true
-
-
     method serHiteado() {}
 
     method agregarHitbox (elementoHitbox) {
@@ -32,10 +29,15 @@ object cerebroBoss {
 
 class BossHitBox {
     var property position
-    method esBeneficio() = false
-    method serHiteado() {cerebroBoss.perderVida()}
+    var property valorImagen
 
-    method image() = "1.png"
+    method image() {
+        if (valorImagen == 3){
+            return "2.png"
+        } else {
+            return "1.png"
+        }
+    }
     method moverse(direccion){// false izq true der
         if(direccion){  
             self.position(self.position().right(1))
@@ -43,5 +45,6 @@ class BossHitBox {
         else{
             self.position(self.position().left(1))
         }
-    }   
+    }
+    method colisionBala(bala){ cerebroBoss.perderVida() }   
 }
