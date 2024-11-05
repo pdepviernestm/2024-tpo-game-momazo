@@ -17,6 +17,10 @@ program moverseJuego {
     //game.addVisual(puntaje)
     game.addVisual(cohete)
     game.addVisual(medikit)
+    game.addVisual(llave)
+
+    medikit.inicializarPosicion() // La inicializo porque sino aparece y hay un tiempo en el que no cae
+    llave.inicializarPosicion() // Hago que inicialice la posición de la llave para que no se vea hasta que empiece a caer
     
     puntaje.inicializar() //inicializo el puntaje
     vidasNave.agregarVidas() // agrego las vidas
@@ -38,81 +42,82 @@ program moverseJuego {
 
 // Disparar
 nave.inicializarBalas()
-    keyboard.space().onPressDo({
-        if (nave.tieneBalas())
-        {   
-            const balaDisparada = nave.dispararBala()
-            cargadorContador.gastarBala()
+keyboard.space().onPressDo({
+    if (nave.tieneBalas())
+    {   
+        const balaDisparada = nave.dispararBala()
+        cargadorContador.gastarBala()
 
-            // Devolver la bala
-            game.schedule(5000, {
-                nave.recuperarBala(balaDisparada)
-                cargadorContador.cargarBala()
-            })
+        // Devolver la bala
+        game.schedule(5000, {
+            nave.recuperarBala(balaDisparada)
+            cargadorContador.cargarBala()
+        })
 
-            balaDisparada.position(nave.position().up(1))
-            game.sound("bala.mp3").volume(0.1)
-            game.sound("bala.mp3").play()
-            game.onTick(200, "Movimiento Disparo", { 
-                if (balaDisparada.position().y()>altoDelJuego-4)
-                {
-                    balaDisparada.position(game.at(altoDelJuego+1, anchoDelJuego))
-                    game.removeTickEvent("Movimiento Disparo")
-                }
-                else
-                    balaDisparada.position(balaDisparada.position().up(1))
-            })
-            // Colisiones bala
-            game.onCollideDo(balaDisparada, {elemento =>
-                if (not elemento.esBeneficio())
-                {
-                    elemento.position(game.at(0,-1))
-                    balaDisparada.position(game.at(0,altoDelJuego+1))
-                    elemento.serHiteado()
-                }
-    })
-        }
-        else
-            game.say(nave, "No hay balas disponibles")
-    })
-    
-    var contador = 0
+        balaDisparada.position(nave.position().up(1))
+        game.sound("bala.mp3").volume(0.1)
+        game.sound("bala.mp3").play()
+        game.onTick(200, "Movimiento Disparo", { 
+            if (balaDisparada.position().y()>altoDelJuego-4)
+            {
+                balaDisparada.position(game.at(altoDelJuego+1, anchoDelJuego))
+                game.removeTickEvent("Movimiento Disparo")
+            }
+            else
+                balaDisparada.position(balaDisparada.position().up(1))
+        })
+        // Colisiones bala
+        game.onCollideDo(balaDisparada, {elemento =>
+            if (not elemento.esBeneficio())
+            {
+                elemento.position(game.at(0,-1))
+                balaDisparada.position(game.at(0,altoDelJuego+1))
+                elemento.serHiteado()
+            }
+})
+    }
+    else
+        game.say(nave, "No hay balas disponibles")
+})
+
+var contador = 0
 
 
 // Caida cohete
-    game.onTick(50, "Caida cohete", {
-        if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
-        {
-            cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-3))
-        }
-        else
-        {
-            cohete.position(cohete.position().down(1))
-        }
-    })
+game.onTick(50, "Caida cohete", {
+    if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
+    {
+        cohete.posicion(1.randomUpTo(anchoDelJuego-1),15.randomUpTo(altoDelJuego-3))
+    }
+    else
+    {
+        cohete.position(cohete.position().down(1))
+    }
+})
 
 // Caida meteorito
-    game.onTick(100,"Crear Meteorito", {
-        if (contador < maxMeteoritos)
-        {
-            const meteorito = new Meteorito()
-            game.addVisual(meteorito)
-            contador += 1
-            game.onTick(100, "Caida Meteorito", {
-                if (meteorito.position().y()<0)
-                {
-                    meteorito.posicionSpawn()
-                }
-                else
-                    meteorito.position(meteorito.position().down(1))
-            })
-        }
-    })
+game.onTick(100,"Crear Meteorito", {
+    if (contador < maxMeteoritos)
+    {
+        const meteorito = new Meteorito()
+        game.addVisual(meteorito)
+        contador += 1
+        game.onTick(100, "Caida Meteorito", {
+            if (meteorito.position().y()<0)
+            {
+                meteorito.posicionSpawn()
+            }
+            else
+                meteorito.position(meteorito.position().down(1))
+        })
+    }
+})
     
 
-    // Boss
-    var contadorBossHitbox = 0
-    game.onTick(100,"Crear Boss", {
+// Boss
+var contadorBossHitbox = 0
+game.onTick(100,"Crear Boss", {
+    if(nave.llaves() >= llavesNecesarias){
         if (contadorBossHitbox < largoJefe)
         {
             const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss))
@@ -123,62 +128,67 @@ nave.inicializarBalas()
         else {
             game.removeTickEvent("Crear Boss")
         }
-    })
+    }
+})
     
-    game.onTick(500, "Movimiento Boss", {
+game.onTick(500, "Movimiento Boss", {
+    if(nave.llaves() >= llavesNecesarias){
         cerebroBoss.moverse()
-    })
+    }
+})
 
-    // Medikit
-    game.onTick(5000, "Dropear Medikit",{
-        medikit.posicionSpawn()
-            game.onTick(200, "Caida Medikit",{
-                medikit.position(medikit.position().down(1))
-                if (medikit.position().y() < -1)
-                {
-                    game.removeTickEvent("Caida Medikit")
-                }
-            })
-    })
+// Medikit
+game.onTick(5000, "Dropear Medikit",{
+    medikit.posicionSpawn()
+        game.onTick(200, "Caida Medikit",{
+            medikit.position(medikit.position().down(1))
+            if (medikit.position().y() < -1)
+            {
+                game.removeTickEvent("Caida Medikit")
+            }
+        })
+})
 
-    // // Llave
-    // game.onTick(5000, "Dropear Llave",{
-    //     llave.posicionSpawn()
-    //         game.onTick(200, "Caida Llave",{
-    //             medikit.position(llave.position().down(1))
-    //             if (llave.position().y() < -1)
-    //             {
-    //                 game.removeTickEvent("Caida Llave")
-    //             }
-    //         })
-    // })
+// Llave
+game.onTick(7000, "Dropear Llave",{
+    if(nave.llaves() < llavesNecesarias){
+        llave.posicionSpawn()
+        game.onTick(300, "Caida Llave",{
+            llave.position(llave.position().down(1))
+            if (llave.position().y() < -1)
+            {
+                game.removeTickEvent("Caida Llave")
+            }
+        })
+    }
+})
 
-    // Impactos
-    game.onCollideDo(nave, {elemento =>
-        nave.serAfectado(elemento)
-        if (elemento.esBeneficio()){
-            game.sound("curacion.mp3").volume(0.1)
-            game.sound("curacion.mp3").play()
-        }
-        else{
-            game.sound("impacto.mp3").volume(0.1)
-            game.sound("impacto.mp3").play()
-        }
-        elemento.position(game.at(0,-1))
-    }) 
+// Impactos
+game.onCollideDo(nave, {elemento =>
+    nave.serAfectado(elemento)
+    if (elemento.esBeneficio()){
+        game.sound("curacion.mp3").volume(0.1)
+        game.sound("curacion.mp3").play()
+    }
+    else{
+        game.sound("impacto.mp3").volume(0.1)
+        game.sound("impacto.mp3").play()
+    }
+    elemento.position(game.at(0,-1))
+}) 
 
-    // Contador
-    game.onTick(500,"Sumar puntaje", {
-        puntaje.sumarPuntos()
-    })
+// Contador
+game.onTick(500,"Sumar puntaje", {
+    puntaje.sumarPuntos()
+})
 
-    // Checkear Muerte
-    game.onTick(200,"Checkear muerte", {
-        if (not nave.estaVivo() || not cerebroBoss.estaVivo())
-        {
-            game.stop()
-        }
-    })
+// Checkear Muerte
+game.onTick(200,"Checkear muerte", {
+    if (not nave.estaVivo() || not cerebroBoss.estaVivo())
+    {
+        game.stop()
+    }
+})
 
-    game.start()
+game.start()
 }

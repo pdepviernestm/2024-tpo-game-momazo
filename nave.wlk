@@ -3,6 +3,7 @@ import vidas.*
 
 object nave {
     var vidas = 3
+    var property llaves = 0
     var property balasDisponibles = cantidadBalas
     const property cargador = []
     const property balasDisparadas = []
@@ -75,6 +76,8 @@ object nave {
     method vidasNave() = vidas
 
     var property position = game.at(anchoDelJuego/2,1)
+
+    method consegurLlave() {llaves += 1}
     
     // GAME
     method image() = "nave.png"

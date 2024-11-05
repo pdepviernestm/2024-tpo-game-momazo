@@ -7,12 +7,14 @@ const largoJefe = 6
 const alturaBoss = 15
 const cantidadBalas = 10
 const rangoMovimiento = anchoDelJuego - largoJefe
+const llavesNecesarias = 1
 
 class ObjetoQueCae {
     var property position = game.at(1.randomUpTo(anchoDelJuego -4),15.randomUpTo(altoDelJuego-4))
     method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-4),15.randomUpTo(altoDelJuego-4))}
     method image() 
     method esBeneficio()  
+    method inicializarPosicion() {position = game.at(0, altoDelJuego + 1)}
 }
 
 class Meteorito inherits ObjetoQueCae() {
@@ -40,11 +42,16 @@ object medikit inherits ObjetoQueCae {
     
 }
 
-// object llave inherits Objeto{ 
-//     method image() = "2.png"
-
-//     method esBeneficio() = true
-// }
+object llave inherits ObjetoQueCae { 
+    override method image() = "llave.png"
+    override method esBeneficio() = true
+    method serHiteado() {} 
+    method afectar(nave) {
+        if(nave.llaves() < llavesNecesarias){
+            nave.consegurLlave()
+        }
+    }
+}
 
 object cohete inherits ObjetoQueCae {
     method serHiteado() {}
