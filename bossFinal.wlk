@@ -1,6 +1,6 @@
 import elementos.*
 object cerebroBoss {
-    var property vida = 100
+    var property vida = 120
     const hitbox = []
     var property direccion = true // false izq true der
     var property contadorMovimiento = 0
@@ -32,12 +32,28 @@ class BossHitBox {
     var property valorImagen
 
     method image() {
-        if (valorImagen == 3){
-            return "2.png"
+        if (valorImagen == 1){
+            return "boss1.png"
         } else {
-            return "1.png"
+            return "invisible.png"
         }
     }
+
+    method cambiarImagen() {
+        if(cerebroBoss.vida() > 50){
+            return self.image()
+        }
+        else{
+            if (valorImagen == 1){
+                return "boss2.png"
+            } 
+            else {
+                return "invisible.png"
+            }
+        }
+    }
+        
+
     method moverse(direccion){// false izq true der
         if(direccion){  
             self.position(self.position().right(1))

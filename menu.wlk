@@ -58,7 +58,7 @@ object menuControles inherits Menu(opciones = []){
 }
 
 object menuComoJugar inherits Menu(opciones = []){
-    override method image() = "comoJugar.png" // Conseguir una foto
+    override method image() = "comojugar.png" // Conseguir una foto
 }
 
 object puntero {
@@ -112,7 +112,7 @@ object configuracion{
 }
 
 object comoJugar{
-    method image() = "HOWTOPLAY.png"
+    method image() = "howToPlay.png"
     var property position = game.at(xInicial, yInicial - 12)
 
     method accion() {

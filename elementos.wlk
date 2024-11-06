@@ -18,7 +18,7 @@ class ObjetoQueCae {
 
 class Meteorito inherits ObjetoQueCae() {
     // GAME
-    override method image() = "meteorito.png"
+    override method image() = "meteoritoFinal.png"
     method afectar(nave){
         nave.modificarVida(-1)
         vidasNave.quitarVida()
