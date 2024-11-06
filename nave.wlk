@@ -80,7 +80,7 @@ object nave {
     method consegurLlave() {llaves += 1}
     
     // GAME
-    method image() = "nave.png"
+    method image() = "xwing.png"
     method colisionBala(bala){}
 }
 

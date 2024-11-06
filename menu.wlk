@@ -49,16 +49,16 @@ object menuInicial inherits Menu(opciones = [iniciar, controles, configuracion, 
     override method image() = "menuInicio.png"
 }
 
-object menuConfiguracion inherits Menu(opciones = [vfx, musica]){ 
-    override method image() = "opciones.png"
+object menuConfiguracion inherits Menu(opciones = [vfx, musica]){ // Hay que ver que opciones meter
+    override method image() = "menuOptions.png"
 }
 
 object menuControles inherits Menu(opciones = []){
-    override method image() = "controles.png" // Hay que cambiarle la foto foto porque aparece el up y el down
+    override method image() = "menuControls.png" 
 }
 
 object menuComoJugar inherits Menu(opciones = []){
-    override method image() = "comoJugar.png" // Conseguir una foto
+    override method image() = "menuComoJugar.png" 
 }
 
 object puntero {
@@ -112,7 +112,7 @@ object configuracion{
 }
 
 object comoJugar{
-    method image() = "HOWTOPLAY.png"
+    method image() = "COMOJUGAR.png"
     var property position = game.at(xInicial, yInicial - 12)
 
     method accion() {
@@ -121,10 +121,10 @@ object comoJugar{
 }
 
 object vfx{ // Podrían ser los dos una clase porque son bastante parecido
-    var property position = game.at(xInicial, yInicial - 2) 
+    var property position = game.at(xInicial , yInicial - 2) 
     var property estado = true // Por defecto esta activado todo
 
-    method image() = "vfx.png" // Nos falta esta imagen
+    method image() = "vfx.png" 
 
     method accion() {
         estado = !estado
@@ -146,7 +146,7 @@ object musica{
 class CheckBox {
     const asociado
     var imagen = "tick options.png"
-    var property position = game.at(asociado.position().x() + 1, asociado.position().y())
+    var property position = game.at(asociado.position().x() + 4, asociado.position().y())
     method image() = imagen
     method actualizarImagen() {
         if(asociado.estado()){
