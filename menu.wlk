@@ -64,6 +64,7 @@ object menuComoJugar inherits Menu(opciones = []){
 object puntero {
     var property aQueApunto = iniciar // Inicia apuntando a "iniciar"
     var property position = game.at(aQueApunto.position().x() - 2, aQueApunto.position().y()) //Inicializo la posición
+    var property menuActual = menuInicial // Arranca en menu inicial
 
     // Actualiza la posición del puntero según la opción a la que apunta
     method actualizarPosicion() {
@@ -105,6 +106,7 @@ object configuracion{
         game.removeVisual(puntero)
         game.addVisual(puntero) //Sino se queda detras de la imagen
         puntero.aQueApunto(vfx)
+        puntero.menuActual(menuConfiguracion)
         puntero.actualizarPosicion() //Sino se queda trabado
     }
 }
