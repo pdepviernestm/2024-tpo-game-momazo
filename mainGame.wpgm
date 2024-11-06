@@ -76,7 +76,6 @@ keyboard.space().onPressDo({
 
 var contador = 0
 
-
 // Caida cohete
 game.onTick(50, "Caida cohete", {
     if(cohete.position().y() < -2)   //Lo mueve denuevo a una posicion random, con == no funciona
