@@ -49,7 +49,7 @@ object menuInicial inherits Menu(opciones = [iniciar, controles, configuracion, 
     override method image() = "menuInicio.png"
 }
 
-object menuConfiguracion inherits Menu(opciones = [vfx, musica]){ // Hay que ver que opciones meter
+object menuConfiguracion inherits Menu(opciones = [vfx, musica]){ 
     override method image() = "opciones.png"
 }
 
@@ -73,7 +73,7 @@ object puntero {
 
     method activar() {aQueApunto.accion()}
 
-    method image() = "punteroMomentaneo.png" //Hay que hacer que se vea bien la imagen
+    method image() = "punteroMomentaneo.png" 
 }
 
 object iniciar {
