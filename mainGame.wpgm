@@ -85,40 +85,10 @@ program moverseJuego {
             })
 
         // Disparar
-        nave.inicializarBalas()
 
-        keyboard.space().onPressDo({
-            if (nave.tieneBalas())
-            {   
-                const balaDisparada = nave.dispararBala()
-                cargadorContador.gastarBala()
+        keyboard.space().onPressDo({ nave.dispararBala() })
 
-                // Devolver la bala
-                game.schedule(5000, {
-                    nave.recuperarBala(balaDisparada)
-                    cargadorContador.cargarBala()
-                })
-
-                balaDisparada.position(nave.position().up(1))
-                if(vfx.estado()){
-                    game.sound("bala.mp3").volume(0.1)
-                    game.sound("bala.mp3").play()
-                }
-                game.onTick(200, "Movimiento Disparo", { 
-                    if (balaDisparada.position().y()>altoDelJuego-4)
-                    {
-                        balaDisparada.position(game.at(altoDelJuego+1, anchoDelJuego))
-                        game.removeTickEvent("Movimiento Disparo")
-                    }
-                    else
-                        balaDisparada.position(balaDisparada.position().up(1))
-                })
-                // Colisiones bala
-                game.onCollideDo(balaDisparada, {elemento => elemento.colisionBala(balaDisparada) })
-            }
-            else
-                game.say(nave, "No hay balas disponibles")
-        })
+        game.onTick(600, "Cooldown Disparo", {nave.cooldownDisparo()})
 
         var contador = 0
 

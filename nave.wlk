@@ -4,58 +4,24 @@ import vidas.*
 object nave {
     var vidas = 3
     var property llaves = 0
-    var property balasDisponibles = cantidadBalas
-    const property cargador = []
-    const property balasDisparadas = []
+    var property disparoDisponible = 1
+    var property contadorBalas = 0
 
-    method inicializarBalas(){
-        const bala0 = new Bala(position = game.at(-1,-1))
-        const bala1 = new Bala(position = game.at(-1,-1))
-        const bala2 = new Bala(position = game.at(-1,-1))
-        const bala3 = new Bala(position = game.at(-1,-1))
-        const bala4 = new Bala(position = game.at(-1,-1))
-        const bala5 = new Bala(position = game.at(-1,-1))
-        const bala6 = new Bala(position = game.at(-1,-1))
-        const bala7 = new Bala(position = game.at(-1,-1))
-        const bala8 = new Bala(position = game.at(-1,-1))
-        const bala9 = new Bala(position = game.at(-1,-1))
-
-        cargador.add(bala0)
-        cargador.add(bala1)
-        cargador.add(bala2)
-        cargador.add(bala3)
-        cargador.add(bala4)
-        cargador.add(bala5)
-        cargador.add(bala6)
-        cargador.add(bala7)
-        cargador.add(bala8)
-        cargador.add(bala9)
-
-        game.addVisual(bala0)
-        game.addVisual(bala1)
-        game.addVisual(bala2)
-        game.addVisual(bala3)
-        game.addVisual(bala4)
-        game.addVisual(bala5)
-        game.addVisual(bala6)
-        game.addVisual(bala7)
-        game.addVisual(bala8)
-        game.addVisual(bala9)
+    method cooldownDisparo() {
+        disparoDisponible = 1
     }
 
     method dispararBala() {
-        balasDisparadas.add(cargador.first())
-        const bala = cargador.first()
-        cargador.remove(cargador.first())
-        return bala
+        if (disparoDisponible == 1) {
+            const balaActual = new Bala(position = self.position().up(1), numeroBala = contadorBalas) //spawnea arriba de la posicion actual de la nave 
+            contadorBalas += 1
+            game.addVisual(balaActual)
+            disparoDisponible = 0
+            game.sound("bala.mp3").volume(0.1)
+            game.sound("bala.mp3").play()
+            balaActual.inicializar()
+        }
     }
-
-    method recuperarBala(miBala) {
-        cargador.add(miBala)
-        balasDisparadas.remove(miBala)
-    }
-
-    method tieneBalas() = cargador.size() > 0
 
     method textColor() = "FF0000"
 
@@ -85,7 +51,27 @@ object nave {
 }
 
 class Bala {
-    var property position = game.at(anchoDelJuego/2,altoDelJuego)
+    var property position //= game.at(anchoDelJuego/2,altoDelJuego)
+    var property nombreBala = ""
+    const property numeroBala
+
     method image() = "bala.png"
     method colisionBala(bala){}
+    method inicializar(){
+        nombreBala = "BalaNumero".concat(numeroBala.stringValue())
+        self.disparar()
+    }
+    method moverse() {
+        self.position(self.position().up(1))
+        if (position.y() >= altoDelJuego-4 ) {self.delete()}
+    }
+    method delete(){
+        game.removeTickEvent(nombreBala) 
+        game.removeVisual(self) 
+    }
+    method disparar(){
+        game.onTick(200, nombreBala, {self.moverse()})
+        game.onCollideDo(self, {elemento => elemento.colisionBala(self) })
+    }
+    
 }
