@@ -1,4 +1,5 @@
 import elementos.*
+import nivel.*
 const xInicial = anchoDelJuego/2 - 4 //Despues lo pulimos bien desde aca
 const yInicial = altoDelJuego/2 + 4
 
@@ -81,7 +82,7 @@ object iniciar {
     var property position = game.at(xInicial, yInicial)
     var property play = false //De esta forma sabe el juego cuando iniciar
 
-    method accion() {self.play(true)}
+    method accion() {nivel.iniciarPartida()}
 }
 
 object controles{
