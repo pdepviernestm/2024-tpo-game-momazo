@@ -25,7 +25,6 @@ object nivel {
         
         puntaje.inicializar() //inicializo el puntaje
         vidasNave.agregarVidas() // agrego las vidas
-        cargadorContador.inicializar()
 
         // Sonido
         if(musica.estado()){
@@ -88,6 +87,7 @@ object nivel {
                 if (contadorBossHitbox < largoJefe)
                 {
                     const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss), valorImagen = contadorBossHitbox)
+                    bossHitbox.inicializar()
                     game.addVisual(bossHitbox)
                     cerebroBoss.agregarHitbox(bossHitbox)
                     contadorBossHitbox += 1
@@ -98,7 +98,7 @@ object nivel {
             }
         })
             
-        game.onTick(500, "Movimiento Boss", {
+        game.onTick(200, "Movimiento Boss", {
             if(nave.llaves() >= llavesNecesarias){
                 cerebroBoss.moverse()
             }
@@ -120,7 +120,7 @@ object nivel {
         game.onTick(7000, "Dropear Llave",{
             if(nave.llaves() < llavesNecesarias){
                 llave.posicionSpawn()
-                game.onTick(300, "Caida Llave",{
+                game.onTick(200, "Caida Llave",{
                     llave.position(llave.position().down(1))
                     if (llave.position().y() < -1)
                     {
@@ -139,14 +139,5 @@ object nivel {
         game.onTick(500,"Sumar puntaje", {
             puntaje.sumarPuntos()
         })
-
-        // Checkear Muerte
-        game.onTick(200,"Checkear muerte", {
-            if (not nave.estaVivo() || not cerebroBoss.estaVivo())
-            {
-                game.stop()
-        }
-    })
-    
     }
 }

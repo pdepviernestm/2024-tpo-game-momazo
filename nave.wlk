@@ -1,3 +1,4 @@
+import contador.*
 import elementos.*
 import vidas.*
 
@@ -29,9 +30,13 @@ object nave {
     
     method modificarVida(vidaModificada){
         vidas += vidaModificada
+        if(vidas<=0){
+            winOrLose.perdi()   
+        }
     }
     method morir() {
         vidas = 0
+        winOrLose.perdi()
     }
     
     method serAfectado(objeto) {
@@ -70,7 +75,7 @@ class Bala {
         game.removeVisual(self) 
     }
     method disparar(){
-        game.onTick(200, nombreBala, {self.moverse()})
+        game.onTick(10, nombreBala, {self.moverse()})
         game.onCollideDo(self, {elemento => elemento.colisionBala(self) })
     }
     

@@ -14,7 +14,7 @@ program moverseJuego {
     game.cellSize(tamanioCelda)
     game.boardGround("fondoAstroDefenders.png")
 
-    game.addVisual(menuInicial)
+    game.addVisual(menuInicial) 
     game.addVisual(puntero)
     game.addVisual(iniciar)
     game.addVisual(configuracion)

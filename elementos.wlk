@@ -2,18 +2,19 @@ import vidas.*
 const anchoDelJuego = 30
 const altoDelJuego = 20
 const tamanioCelda = 50
-const maxMeteoritos = 12
+const maxMeteoritos = 15
 const largoJefe = 6
 const alturaBoss = 15
 const cantidadBalas = 10
 const rangoMovimiento = anchoDelJuego - largoJefe
-const llavesNecesarias = 1
+const llavesNecesarias = 3
 
 class ObjetoQueCae {
     var property position = game.at(1.randomUpTo(anchoDelJuego -4),15.randomUpTo(altoDelJuego-4))
     method posicionSpawn() {position = game.at(1.randomUpTo(anchoDelJuego-4),15.randomUpTo(altoDelJuego-4))}
     method image() 
     method inicializarPosicion() {position = game.at(0, altoDelJuego + 1)}
+    // CORREGIR agregar colisionNave y despues usarlo con super
 }
 
 class Meteorito inherits ObjetoQueCae() {
@@ -40,7 +41,7 @@ object medikit inherits ObjetoQueCae {
     method afectar(nave){
         if(nave.vidasNave() <3){
             nave.modificarVida(1)
-            vidasNave.sumarVida()
+            vidasNave.sumarVida() //CORREGIR que la nave sume la vida
         } 
     }
     method colisionNave(nave){

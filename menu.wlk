@@ -19,6 +19,7 @@ class Menu {
     }
 }
 
+//CORREGIR self hace lo mismo dos veces
 method opcionSiguiente() {
     if (puntero.aQueApunto() == opciones.last()) { //El siguiente del último es el primero
         puntero.aQueApunto(opciones.first())
@@ -45,6 +46,7 @@ method opcionAnterior() {
     // Por algún motivo si no le indicamos que se actualice no lo hace
 }
 }
+// En vez de heredarlos, instanciarlos con new
 
 object menuInicial inherits Menu(opciones = [iniciar, controles, configuracion, comoJugar]) {
     override method image() = "menuInicio.png"

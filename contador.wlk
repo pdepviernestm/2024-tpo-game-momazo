@@ -13,8 +13,8 @@ class Digitos {
         valorDigitoActual = ((puntajeTotal/10 ** digitoInteres) % 10).truncate(0)
         self.actualizarImagen()
     }
-
-    method actualizarImagen() {
+    //CORREGIR 
+    method actualizarImagen() {// =  valorDigitoActual.toString() + ".png"
         if (valorDigitoActual == 0) { imagen = "0.png" }
         if (valorDigitoActual == 1) { imagen = "1.png" }
         if (valorDigitoActual == 2) { imagen = "2.png" }
@@ -33,6 +33,15 @@ object puntaje {
     var puntos = 0
 
     method inicializar(){
+        // CORREGIR .times
+        // var contador  = 0
+        // 6.times({
+        //     const digito = new Digitos(digitoInteres = contador, x = 6-contador) 
+        //     digitos.add(digito)
+        //     game.addVisual(digito)
+        //     contador +=1
+        // })
+        
         const digito0 = new Digitos(digitoInteres = 0, x = 6) 
         const digito1 = new Digitos(digitoInteres = 1, x = 5)
         const digito2 = new Digitos(digitoInteres = 2, x = 4)
@@ -51,6 +60,7 @@ object puntaje {
         game.addVisual(digito3)
         game.addVisual(digito4)
         game.addVisual(digito5)
+        
     }
 
     method sumarPuntos() {
@@ -71,31 +81,17 @@ object puntaje {
     }
 }
 
-object cargadorContador {
-    const property digitos = []
-    var balas = cantidadBalas
-
-    method inicializar(){
-        const digito0 = new Digitos(digitoInteres = 0, x = 29, y=0) 
-        const digito1 = new Digitos(digitoInteres = 1, x = 28, y=0)
-        digitos.add(digito0)
-        digitos.add(digito1)
-        self.actualizarCargador()
-        game.addVisual(digito0)
-        game.addVisual(digito1)
+object winOrLose {
+    var property image = "2024-11-08-You-Win-.gif"
+    method perdi() {
+        self.image("2024-11-08-You-Lose-.gif")
+        game.addVisual(self)
+        game.schedule(100, {game.stop()}) 
     }
-
-    method cargarBala() {
-        balas += 1
-        self.actualizarCargador()
+    method gane() {
+        game.addVisual(self)
+        game.schedule(100, {game.stop()}) 
     }
-
-    method gastarBala() {
-        balas -= 1
-        self.actualizarCargador()
-    }
-
-    method actualizarCargador() {
-        digitos.forEach({a => a.actualizarValor(balas)})
-    }
-}
+    const property position = game.at(9,7)
+    
+} 

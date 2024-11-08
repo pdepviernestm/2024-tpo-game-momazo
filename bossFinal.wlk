@@ -1,6 +1,7 @@
+import contador.*
 import elementos.*
 object cerebroBoss {
-    var property vida = 120
+    var property vida = 200
     const hitbox = []
     var property direccion = true // false izq true der
     var property contadorMovimiento = 0
@@ -13,6 +14,10 @@ object cerebroBoss {
     
     method perderVida(){
         vida-=50
+        hitbox.forEach({a => a.cambiarImagen()})
+        if(vida<=0){
+            winOrLose.gane()
+        }
     }
 
     method estaVivo() = vida > 0
@@ -30,27 +35,20 @@ object cerebroBoss {
 class BossHitBox {
     var property position
     var property valorImagen
+    var imagen = "invisible.png"
 
-    method image() {
+    method inicializar() {
         if (valorImagen == 1){
-            return "boss1.png"
-        } else {
-            return "invisible.png"
+            imagen = "boss1.png"
         }
     }
+        
+    method image() = imagen
 
     method cambiarImagen() {
-        if(cerebroBoss.vida() > 50){
-            return self.image()
-        }
-        else{
-            if (valorImagen == 1){
-                return "boss2.png"
+        if(cerebroBoss.vida() < 100 && valorImagen == 1){
+                imagen = "boss2.png"
             } 
-            else {
-                return "invisible.png"
-            }
-        }
     }
         
 
