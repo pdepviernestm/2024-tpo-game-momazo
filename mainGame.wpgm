@@ -17,14 +17,13 @@ program moverseJuego {
     game.addVisual(menuInicial)
     if(musica.estado()){
         game.sound("menuSoundtrack.mp3").volume(0.2)
-        game.sound("menuSoundtrack.mp3").play()
+        game.sound("menuSoundtrack.mp3").play() // No sé cómo detenerlo CORREGIR
     }
     game.addVisual(puntero)
     game.addVisual(iniciar)
     game.addVisual(configuracion)
     game.addVisual(controles)
     game.addVisual(comoJugar)
-    game.sound("menuSoundtrack.mp3").stop()
 
     keyboard.down().onPressDo({
         puntero.menuActual().opcionSiguiente()
