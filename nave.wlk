@@ -1,3 +1,4 @@
+import menu.*
 import elementos.*
 import vidas.*
 import bossFinal.cerebroBoss
@@ -19,8 +20,7 @@ object nave {
             contadorBalas += 1
             game.addVisual(balaActual)
             disparoDisponible = 0
-            game.sound("bala.mp3").volume(0.1)
-            game.sound("bala.mp3").play()
+            soundtrack.efecto("BALA.mp3")
             balaActual.inicializar()
         }
     }

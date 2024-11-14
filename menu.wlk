@@ -1,6 +1,6 @@
 import elementos.*
 import nivel.*
-const xInicial = anchoDelJuego/2 - 4 //Despues lo pulimos bien desde aca
+const xInicial = anchoDelJuego/2 - 10 //Despues lo pulimos bien desde aca
 const yInicial = altoDelJuego/2 + 4
 
 class Menu {
@@ -21,6 +21,7 @@ class Menu {
 
 //CORREGIR self hace lo mismo dos veces
 method opcionSiguiente() {
+    soundtrack.efecto("cambioMenu.mp3")
     if (puntero.aQueApunto() == opciones.last()) { //El siguiente del último es el primero
         puntero.aQueApunto(opciones.first())
     } else {
@@ -34,6 +35,7 @@ method opcionSiguiente() {
 }
 
 method opcionAnterior() {
+    soundtrack.efecto("cambioMenu.mp3")
     if (puntero.aQueApunto() == opciones.first()) { //El siguiente del último es el primero
         puntero.aQueApunto(opciones.last())
     } else {
@@ -56,7 +58,7 @@ object menuConfiguracion inherits Menu(opciones = [vfx, musica]){ // Hay que ver
 }
 
 object menuControles inherits Menu(opciones = []){
-    override method image() = "menuControls.png" 
+    override method image() = "controlesDEF.png" 
 }
 
 object menuComoJugar inherits Menu(opciones = []){
@@ -73,7 +75,10 @@ object puntero {
         position = game.at(aQueApunto.position().x() - 2, aQueApunto.position().y())
     }
 
-    method activar() {aQueApunto.accion()}
+    method activar() {
+        aQueApunto.accion()
+        soundtrack.efecto("SELECCIONAR.mp3")
+    }
 
     method image() = "punteroMomentaneo.png" 
 }
@@ -83,7 +88,10 @@ object iniciar {
     var property position = game.at(xInicial, yInicial)
     var property play = false //De esta forma sabe el juego cuando iniciar
 
-    method accion() {nivel.iniciarPartida()}
+    method accion() {
+        soundtrack.cambiarMusica("elSoundtrack.mp3") 
+        nivel.iniciarPartida()
+    }
 }
 
 object controles{
@@ -140,6 +148,12 @@ object musica{
 
     method image() = "music.png"
     method accion() {
+        if(estado){
+            soundtrack.pararMusica()
+        }
+        else{
+            soundtrack.iniciarMusica()
+        }
         estado = !estado
         check2.actualizarImagen()
     }
@@ -157,6 +171,34 @@ class CheckBox {
         else imagen = "cruz options.png"
     }
 }
+
+object soundtrack {
+    var musicaActual = game.sound("menuSoundtrack.mp3")
+
+    method efecto(sonido){
+        if(vfx.estado()) game.sound(sonido).play()
+    }
+
+    method iniciarMusica(){
+        musicaActual.play()
+    }
+
+    method cambiarMusica(cancion) {
+        if(musica.estado()){
+            musicaActual.stop()
+            musicaActual = game.sound(cancion)
+            musicaActual.shouldLoop(true)
+            musicaActual.play()
+            musicaActual.volume(0.6)
+        }
+    }
+
+    method pararMusica() {
+        musicaActual.stop()
+    }
+}
+
+
 
 const check1 = new CheckBox(asociado = vfx)
 const check2 = new CheckBox(asociado = musica)

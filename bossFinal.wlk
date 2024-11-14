@@ -1,4 +1,5 @@
 import elementos.*
+import menu.*
 import contador.winOrLose
 
 object cerebroBoss {
@@ -19,7 +20,7 @@ object cerebroBoss {
     method estaVivo() = vida > 0
 
     method iniciarMovimiento(){
-        game.onTick(500, "Movimiento Boss", { self.moverse() })
+        game.onTick(200, "Movimiento Boss", { self.moverse() })
     }
 
     method moverse(){
@@ -33,7 +34,8 @@ object cerebroBoss {
 
     // crear hitbox
     method crearHitbox() { // me lo envia nave cuanto tiene las llaves suficientes
-      largoJefe.times({ _ => 
+        soundtrack.cambiarMusica("bossSoundtrack.mp3")
+        largoJefe.times({ _ => 
             const bossHitbox = new BossHitBox(position = game.at(contadorBossHitbox,alturaBoss), valorImagen = contadorBossHitbox)
             game.addVisual(bossHitbox)
             hitbox.add(bossHitbox)
@@ -47,13 +49,13 @@ object cerebroBoss {
 class BossHitBox {
     var property position
     var property valorImagen
-    var property textoImagen = "0.png"
+    var property textoImagen = "invisible.png"
 
     method inicializar() {
         if (valorImagen == 0){
             self.textoImagen("boss1.png")
         } else {
-            self.textoImagen("0.png")
+            self.textoImagen("invisible.png")
         }
     }
 
@@ -76,6 +78,5 @@ class BossHitBox {
     method colisionBala(bala){ 
         bala.delete()
         cerebroBoss.perderVida() 
-        
     }   
 }

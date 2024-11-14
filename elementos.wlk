@@ -1,3 +1,4 @@
+import menu.*
 import vidas.*
 const anchoDelJuego = 30
 const altoDelJuego = 20
@@ -7,7 +8,7 @@ const largoJefe = 5
 const alturaBoss = 15
 const cantidadBalas = 10
 const rangoMovimiento = anchoDelJuego - largoJefe
-const llavesNecesarias = 1
+const llavesNecesarias = 3
 
 class ObjetoQueCae {
     var property position = game.at(1.randomUpTo(anchoDelJuego -4),15.randomUpTo(altoDelJuego-4))
@@ -31,8 +32,7 @@ class Meteorito inherits ObjetoQueCae() {
     }
     override method colisionNave(nave){
         super(nave)
-        game.sound("impacto.mp3").volume(0.1)
-        game.sound("impacto.mp3").play()
+        soundtrack.efecto("impacto.mp3")
     }
     method colisionBala(bala){
         self.position(game.at(0,-1))
@@ -50,7 +50,7 @@ class Meteorito inherits ObjetoQueCae() {
 }
 
 object medikit inherits ObjetoQueCae {
-    override method image() = "medikit.png"
+    override method image() = "vidaNave.png"
     override method afectar(nave){
         if(nave.vidasNave() <3){
             nave.modificarVida(1)
@@ -59,8 +59,7 @@ object medikit inherits ObjetoQueCae {
     }
     override method colisionNave(nave){
         super(nave)
-        game.sound("curacion.mp3").volume(0.1)
-        game.sound("curacion.mp3").play()
+        soundtrack.efecto("curar.mp3")
     }
     method spawnear(){
         self.posicionSpawn()
@@ -83,8 +82,7 @@ object llave inherits ObjetoQueCae {
     }
     override method colisionNave(nave){
         super(nave)
-        game.sound("curacion.mp3").volume(0.1)
-        game.sound("curacion.mp3").play()
+        soundtrack.efecto("LLAVE.mp3")
     }
     method colisionBala(bala){}
     method finalizar(){
@@ -114,8 +112,6 @@ object cohete inherits ObjetoQueCae {
     }
     override method colisionNave(nave){
         super(nave)
-        game.sound("impacto.mp3").volume(0.1)
-        game.sound("impacto.mp3").play()
     }
     method colisionBala(bala){
         self.position(game.at(0,-1))

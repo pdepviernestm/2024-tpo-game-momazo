@@ -1,3 +1,4 @@
+import menu.*
 import elementos.*
 class Digitos {
     var property digitoInteres //digito que nos importa del numero inicial 0 al 5 (6 totales 5-4-3-2-1-0)
@@ -52,14 +53,17 @@ object puntaje {
 }
 
 object winOrLose {
-    var property image = "2024-11-08-You-Win-.gif"
+    var property image = "winner.gif"
 
-    const property position = game.at(9,7)
+    var property position = game.at(9,6)
 
     method perdi() {
-        self.image("2024-11-08-You-Lose-.gif")
+        self.image("gameOver.gif")
         game.addVisual(self)
-        game.schedule(100, {game.stop()}) 
+        position = game.at(-4,-2)
+        soundtrack.efecto("MUERTE.mp3")
+        soundtrack.cambiarMusica("perdiste.mp3")
+        game.schedule(500, {game.stop()}) 
     }
 
     method gane() {

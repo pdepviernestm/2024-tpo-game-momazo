@@ -15,10 +15,7 @@ program moverseJuego {
     game.boardGround("fondoAstroDefenders.png")
 
     game.addVisual(menuInicial)
-    if(musica.estado()){
-        game.sound("menuSoundtrack.mp3").volume(0.2)
-        game.sound("menuSoundtrack.mp3").play() // No sé cómo detenerlo CORREGIR
-    }
+    soundtrack.iniciarMusica()
     game.addVisual(puntero)
     game.addVisual(iniciar)
     game.addVisual(configuracion)
@@ -38,8 +35,7 @@ program moverseJuego {
     })
 
     keyboard.e().onPressDo({ //Con la e cerramos TODO
-        game.sound("menuAtras.mp3").volume(0.1)
-        game.sound("menuAtras.mp3").play()
+        soundtrack.efecto("menuAtras.mp3")
         game.removeVisual(menuControles)
         game.removeVisual(menuComoJugar)
         game.removeVisual(menuConfiguracion)
@@ -51,5 +47,4 @@ program moverseJuego {
         puntero.actualizarPosicion() //Sino queda
         puntero.menuActual(menuInicial)
     })
-
 }

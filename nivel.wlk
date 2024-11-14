@@ -24,21 +24,14 @@ object nivel {
         
         puntaje.inicializar() //inicializo el puntaje
         vidasNave.agregarVidas() // agrego las vidas
-
-        // Sonido
-        if(musica.estado()){
-            game.sound("soundtrack.mp3").volume(0.2)
-            game.sound("soundtrack.mp3").play()
-            game.sound("soundtrack.mp3").shouldLoop(true)
-        }
             
         // Movimiento nave
         keyboard.left().onPressDo({
-            nave.position(nave.position().left(1))
+            if(nave.position().x() >= 1) nave.position(nave.position().left(1))
         })
         
         keyboard.right().onPressDo({
-            nave.position(nave.position().right(1))
+            if(nave.position().x() <= anchoDelJuego - 2) nave.position(nave.position().right(1))
         })
 
         // Disparar
@@ -46,32 +39,6 @@ object nivel {
 
         game.onTick(400, "Cooldown Disparo", {nave.cooldownDisparo()})
 
-
-        /*Caida meteorito
-        var contador = 0
-        game.onTick(100,"Crear Meteorito", {
-            if (contador < maxMeteoritos)
-            {
-                const meteorito = new Meteorito()
-                game.addVisual(meteorito)
-                contador += 1
-                game.onTick(100, "Caida Meteorito", {
-                    if (meteorito.position().y()<0)
-                    {
-                        meteorito.posicionSpawn()
-                    }
-                    else
-                        meteorito.position(meteorito.position().down(1))
-                })
-            }
-        })
-        
-        maxMeteoritos.times({_ => 
-            const meteorito = new Meteorito()
-            game.addVisual(meteorito)
-            meteorito.inicializar()
-        })
-        */ 
         var contador = 0
         maxMeteoritos.times({_ => 
             contador +=1
