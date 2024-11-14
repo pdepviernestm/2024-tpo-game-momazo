@@ -25,12 +25,11 @@ object nivel {
         
         puntaje.inicializar() //inicializo el puntaje
         vidasNave.agregarVidas() // agrego las vidas
-
         // Sonido
         if(musica.estado()){
-            game.sound("soundtrack.mp3").volume(0.2)
-            game.sound("soundtrack.mp3").play()
-            game.sound("soundtrack.mp3").shouldLoop(true)
+            game.sound("elSoundtrack.mp3").volume(0.2)
+            game.sound("elSoundtrack.mp3").play()
+            game.sound("elSoundtrack.mp3").shouldLoop(true)
         }
             
         // Movimiento nave
@@ -83,6 +82,12 @@ object nivel {
         // Boss
         var contadorBossHitbox = 0
         game.onTick(100,"Crear Boss", {
+            if(contadorBossHitbox == 0){
+                game.sound("elSoundtrack.mp3").stop()
+                game.sound("bossSoundtrack.mp3").volume(0.2)
+                game.sound("bossSoundtrack.mp3").play()
+                game.sound("bossSoundtrack.mp3").shouldLoop(true)
+            }
             if(nave.llaves() >= llavesNecesarias){
                 if (contadorBossHitbox < largoJefe)
                 {

@@ -18,8 +18,8 @@ object nave {
             contadorBalas += 1
             game.addVisual(balaActual)
             disparoDisponible = 0
-            game.sound("bala.mp3").volume(0.1)
-            game.sound("bala.mp3").play()
+            game.sound("BALA.mp3").volume(0.1)
+            game.sound("BALA.mp3").play()
             balaActual.inicializar()
         }
     }

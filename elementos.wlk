@@ -46,8 +46,8 @@ object medikit inherits ObjetoQueCae {
     }
     method colisionNave(nave){
         self.afectar(nave)
-        game.sound("curacion.mp3").volume(0.1)
-        game.sound("curacion.mp3").play()
+        game.sound("curar.mp3").volume(0.1)
+        game.sound("curar.mp3").play()
         self.position(game.at(0,-1))
     }
     method colisionBala(bala){}
@@ -62,8 +62,8 @@ object llave inherits ObjetoQueCae {
     }
     method colisionNave(nave){
         self.afectar(nave)
-        game.sound("curacion.mp3").volume(0.1)
-        game.sound("curacion.mp3").play()
+        game.sound("LLAVE.mp3").volume(0.1)
+        game.sound("LLAVE.mp3").play()
         self.position(game.at(0,-1))
     }
     method colisionBala(bala){}
@@ -79,8 +79,8 @@ object cohete inherits ObjetoQueCae {
     }
     method colisionNave(nave){
         self.afectar(nave)
-        game.sound("impacto.mp3").volume(0.1)
-        game.sound("impacto.mp3").play()
+        game.sound("MUERTE.mp3").volume(0.1)
+        game.sound("MUERTE.mp3").play()
         self.position(game.at(0,-1))
     }
     method colisionBala(bala){

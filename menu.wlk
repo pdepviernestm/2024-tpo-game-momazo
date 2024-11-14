@@ -29,6 +29,8 @@ method opcionSiguiente() {
             puntero.aQueApunto(opciones.get(indiceActual + 1))
         }
     }
+    game.sound("cambioMenu.mp3").volume(0.1)
+    game.sound("cambioMenu.mp3").play()
     puntero.actualizarPosicion() // Llamada para actualizar la posición del puntero
     // Por algún motivo si no le indicamos que se actualice no lo hace
 }
@@ -42,6 +44,8 @@ method opcionAnterior() {
             puntero.aQueApunto(opciones.get(indiceActual - 1))
         }
     }
+    game.sound("cambioMenu.mp3").volume(0.1)
+    game.sound("cambioMenu.mp3").play()
     puntero.actualizarPosicion() // Llamada para actualizar la posición del puntero
     // Por algún motivo si no le indicamos que se actualice no lo hace
 }
@@ -74,7 +78,10 @@ object puntero {
         position = game.at(aQueApunto.position().x() - 2, aQueApunto.position().y())
     }
 
-    method activar() {aQueApunto.accion()}
+    method activar() {
+        game.sound("SELECCIONAR.mp3").volume(0.1)
+        game.sound("SELECCIONAR.mp3").play()
+        aQueApunto.accion()}
 
     method image() = "punteroMomentaneo.png" 
 }
@@ -84,7 +91,9 @@ object iniciar {
     var property position = game.at(xInicial, yInicial)
     var property play = false //De esta forma sabe el juego cuando iniciar
 
-    method accion() {nivel.iniciarPartida()}
+    method accion() {
+        nivel.iniciarPartida()
+    }
 }
 
 object controles{
