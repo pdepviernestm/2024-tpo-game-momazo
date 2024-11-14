@@ -1,6 +1,7 @@
-import contador.*
 import elementos.*
 import vidas.*
+import bossFinal.cerebroBoss
+import contador.winOrLose
 
 object nave {
     var vidas = 3
@@ -18,8 +19,8 @@ object nave {
             contadorBalas += 1
             game.addVisual(balaActual)
             disparoDisponible = 0
-            game.sound("BALA.mp3").volume(0.1)
-            game.sound("BALA.mp3").play()
+            game.sound("bala.mp3").volume(0.1)
+            game.sound("bala.mp3").play()
             balaActual.inicializar()
         }
     }
@@ -48,8 +49,18 @@ object nave {
 
     var property position = game.at(anchoDelJuego/2,1)
 
-    method consegurLlave() {llaves += 1}
+    method conseguirLlave() {
+        llaves += 1
+        self.verificarLLaves()
+    }
     
+    method verificarLLaves() {
+      if (llaves == llavesNecesarias) {
+        cerebroBoss.crearHitbox()
+        llave.finalizar()
+        }
+    }
+
     // GAME
     method image() = "xwing.png"
     method colisionBala(bala){}
@@ -75,7 +86,7 @@ class Bala {
         game.removeVisual(self) 
     }
     method disparar(){
-        game.onTick(10, nombreBala, {self.moverse()})
+        game.onTick(100, nombreBala, {self.moverse()})
         game.onCollideDo(self, {elemento => elemento.colisionBala(self) })
     }
     
