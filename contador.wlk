@@ -53,12 +53,12 @@ object puntaje {
 }
 
 object winOrLose {
-    var property image = "winner.gif"
+    var property image = "winnerFINAL.gif"
 
     var property position = game.at(9,6)
 
     method perdi() {
-        self.image("gameOver.gif")
+        self.image("gameOverFINAL.gif")
         game.addVisual(self)
         position = game.at(-4,-2)
         soundtrack.efecto("MUERTE.mp3")
