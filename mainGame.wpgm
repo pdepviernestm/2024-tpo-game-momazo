@@ -1,0 +1,50 @@
+import wollok.game.*
+import nave.*
+import bossFinal.*
+import elementos.*
+import vidas.*
+import contador.*
+import menu.*
+
+program moverseJuego {
+    game.start()
+    game.title("Astro Defender")
+    game.height(altoDelJuego)
+    game.width(anchoDelJuego)
+    game.cellSize(tamanioCelda)
+    game.boardGround("fondoAstroDefenders.png")
+
+    game.addVisual(menuInicial)
+    soundtrack.iniciarMusica()
+    game.addVisual(puntero)
+    game.addVisual(iniciar)
+    game.addVisual(configuracion)
+    game.addVisual(controles)
+    game.addVisual(comoJugar)
+
+    keyboard.down().onPressDo({
+        puntero.menuActual().opcionSiguiente()
+    })
+
+    keyboard.up().onPressDo({
+        puntero.menuActual().opcionAnterior()
+    })
+
+    keyboard.enter().onPressDo({
+        puntero.activar()
+    })
+
+    keyboard.e().onPressDo({ //Con la e cerramos TODO
+        soundtrack.efecto("menuAtras.mp3")
+        game.removeVisual(menuControles)
+        game.removeVisual(menuComoJugar)
+        game.removeVisual(menuConfiguracion)
+        game.removeVisual(vfx)
+        game.removeVisual(musica)
+        game.removeVisual(check1)
+        game.removeVisual(check2)
+        puntero.aQueApunto(iniciar)
+        puntero.actualizarPosicion() //Sino queda
+        puntero.menuActual(menuInicial)
+    })
+}
